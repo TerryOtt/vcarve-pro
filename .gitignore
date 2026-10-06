@@ -1,0 +1,12 @@
+.tools/
+**/node_modules/
+**/__pycache__/
+*.pyc
+*.inspect.ndjson
+*.vtdb-wal
+*.vtdb-shm
+Amana-Database/sources/
+sdk-reference/
+Vectric_Gadget_SDK.vgadget
+*.npz
+coaster/source-logo.*

@@ -1,0 +1,108 @@
+PURDUE COASTER - SIX DIRECT-GENERATED PLANETCNC TAP PROGRAMS
+
+These are independent CAM programs, not exports from the VCarve job you previewed.
+Use the six files together as a matched set. Do not mix either half with earlier
+VCarve or other plug/pocket programs.
+
+STOCK AND ORIGINS
+  Maple: 4 x 4 x 0.5 inches, pocket stock.
+  Walnut: 4 x 4 x 0.5 inches, plug stock.
+  Logo: approximately 3 inches wide, centered. Registered mark removed.
+  XY origin: spindle/tool center at the lower-left stock corner.
+  Z origin: actual tip referenced to the ORIGINAL, flat stock top.
+  The files retain your active work coordinate system. They do not establish
+  offsets, home axes, change tools, or probe automatically.
+  Each new stock mounting needs its own correct XY/Z setup.
+
+INLAY DIMENSIONS
+  Maple maximum pocket depth: 0.125 inch.
+  Nominal full-depth plug insertion: 0.120 inch.
+  Nominal bottom glue gap at full pocket depth: 0.005 inch.
+  Surface/backing clearance: 0.050 inch.
+  Walnut maximum background cut: 0.170 inch.
+  Walnut backing below its cleared background: 0.330 inch.
+  Male side fit allowance: 0.0005 inch inward, a small deliberate clearance.
+  Narrow portions of the tapered design have shallower features.
+
+CUT ORDER - COMPLETE ONE STOCK BEFORE MOUNTING THE OTHER
+  Maple_01_quarter.tap  - 1/4 inch end mill
+  Maple_02_eighth.tap   - 1/8 inch end mill
+  Maple_03_V60.tap      - pointed 60 degree V-bit
+  Walnut_01_quarter.tap - 1/4 inch end mill
+  Walnut_02_eighth.tap  - 1/8 inch end mill
+  Walnut_03_V60.tap     - SAME pointed 60 degree V-bit
+
+PROGRAMMED TRIAL CUTTING SETTINGS
+  All bits: S18000, nominal 18,000 RPM.
+  Quarter end mill: feed 80 IPM, plunge 15 IPM, layer increments <=0.040 inch,
+    raster spacing 0.100 inch. Ramp feed <=20 IPM, approximately 2 degree ramps.
+  Eighth end mill: feed 50 IPM, plunge 10 IPM, layer increments <=0.020 inch,
+    raster spacing 0.0375 inch. Ramp feed <=20 IPM, approximately 2 degree ramps.
+  V-bit: feed 50 IPM, plunge 15 IPM, rough contour increments 0.005 inch.
+    Finishing uses the simulated already-cut cone volume, with incremental
+    additional cone penetration limited to 0.0125 inch per finishing pass.
+  Very small end-mill loci without room for a ramp use slow 0.005 inch Z steps.
+  These settings are generic trial starting values. They are not manufacturer
+  specifications and do not certify bit strength. Your generic 60 degree bit
+  is NOT treated as an Amana bit. Its package label reads 60 Degree 3F,
+  1/4 x 2-1/2 x 60 degrees, code CXZ20260121; manufacturer is unidentified.
+  If router RPM is set manually, the S command does not set the physical dial.
+
+V-BIT GEOMETRY TO CHECK BEFORE A CUT
+  These programs assume a sharp POINTED 60 degree INCLUDED-angle cutter.
+  They do not compensate a flat, round, worn, or chipped tip.
+  Its usable tapered cutting edges must extend at least 0.170 inch above the
+  tip. Shank size and overall length do not establish usable cutting height.
+  The cutting cone needs about 0.197 inch diameter at the deepest plug cut.
+
+WORKHOLDING AND MOVES
+  Secure the stock on a suitable spoilboard; keep fixtures, clamps and screws
+  outside the complete machining and spindle/collet travel area.
+  Clamp at the front/back stock margins or use an appropriate fixture; do not
+  place a clamp over the logo or the plug's surrounding clearance band.
+  Rapid transfers use Z=1.000 inch ABOVE the original stock top. Confirm that
+  this clears the clamps and remains within the machine's available Z travel.
+  Neighboring V-bit finishing paths also use short feed links inside the
+  machining area. They follow already-cleared volume or pass 0.025 inch above
+  the original top. Workholding must stay out of these links too.
+  Between manual bit changes, retain XY if the stock has not moved. Establish
+  the replacement bit's Z reference using the untouched original top plane or
+  your correct tool-measuring routine, never the cleared pocket floor.
+
+PREVIEW AND FIRST TEST
+  Open each .tap file using PlanetCNC File > Open. G20 selects inches; G90
+  selects absolute coordinates. Programs use ordinary G0/G1 moves and M3/M5
+  spindle commands, with a 3 second start delay; each ends retracted with M30.
+  Confirm the displayed size, origin, depth, cutter, workholding and machine
+  behavior before running a test pair. The programs do not contain tool-change
+  or automatic tool-measurement macros from your machine's VCarve postprocessor.
+  Run the matched six-file set on a scrap/test pair first and check actual fit.
+  Toolpath-3D-Preview.png shows the independently simulated cuts.
+  Validation-Report.json records geometric checks and their resolution/limits.
+  Geometry simulation does not model bit stress, runout, actual angle error,
+  machine repeatability, wood grain, board flatness, or clamping.
+
+TRIM THE WALNUT PLUG BEFORE FITTING
+  The walnut program clears a rectangular band around the raised design.
+  It leaves an uncut outer rim to retain workholding; that rim will prevent
+  insertion if left attached. After all walnut cuts are complete, saw off the
+  outer rim THROUGH THE CLEARED BAND, keeping the backing and all logo islands.
+  Suggested rectangular trim lines, measured from the walnut XY origin:
+    X approximately 0.375 and 3.625 inches;
+    Y approximately 1.072 and 2.928 inches.
+  Check the actual raised design and saw kerf before trimming. Do not saw into
+  the raised tapered logo. Perimeter profiling/through-cuts are not in these files.
+
+ASSEMBLY
+  Flip the walnut's CNC-cut face down into the maple pocket and align the P.
+  Test fit before glue. Apply the appropriate wood glue, clamp, and allow its
+  specified cure time. Remove the remaining walnut backing and finish flush
+  using a separate, correctly set up removal operation. Those assembly/backing
+  removal operations are not contained in these six programs.
+
+SOURCE AND VERIFICATION
+  Logo traced from the supplied original black/white image, not the photo render.
+  Direct toolpath source: D:\Projects\VcarvePro\coaster\generate_tap.py
+  Numerical geometry checks and swept-tool simulation passed; the code has
+  not been executed on your DWC or physically test fitted. Native VCarve
+  previews validate the previous VCarve calculation, not this independent set.

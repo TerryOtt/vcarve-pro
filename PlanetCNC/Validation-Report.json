@@ -1,0 +1,148 @@
+{
+  "Maple": {
+    "maximum_overcut_in": 6.021887319063168e-05,
+    "maximum_residual_in_mating_area": 0.0007896246574991966,
+    "mean_residual_in_mating_area": 2.2735583067893863e-06
+  },
+  "Walnut": {
+    "maximum_overcut_in": 3.368553864982471e-05,
+    "maximum_residual_in_mating_area": 0.0008372565713478664,
+    "mean_residual_in_mating_area": 5.752565775055794e-07
+  },
+  "assembled_fit": {
+    "nominal_insertion_in": 0.12,
+    "max_sampled_interference_in": -7.710233330726624e-05,
+    "fraction_with_interference_over_0_001_in": 0.0,
+    "side_fit_allowance_in": 0.0005
+  },
+  "grid_resolution_in": 0.004,
+  "programs": [
+    {
+      "filename": "Maple_01_quarter.tap",
+      "maximum_cut_depth_in": 0.125,
+      "tool_diameter_in": 0.25,
+      "feed_ipm": 80,
+      "plunge_ipm": 15,
+      "rpm": 18000,
+      "pass_depth_in": 0.04,
+      "paths": 45,
+      "cutting_segments": 1963,
+      "guarded_finish_approaches": 0,
+      "cutting_length_in": 74.92294267644675,
+      "feed_motion_minutes": 2.729349062758533,
+      "bytes": 86853
+    },
+    {
+      "filename": "Maple_02_eighth.tap",
+      "maximum_cut_depth_in": 0.125,
+      "tool_diameter_in": 0.125,
+      "feed_ipm": 50,
+      "plunge_ipm": 10,
+      "rpm": 18000,
+      "pass_depth_in": 0.02,
+      "paths": 127,
+      "cutting_segments": 13247,
+      "guarded_finish_approaches": 0,
+      "cutting_length_in": 238.61807378878189,
+      "feed_motion_minutes": 7.790507163132927,
+      "bytes": 574625
+    },
+    {
+      "filename": "Maple_03_V60.tap",
+      "maximum_cut_depth_in": 0.125,
+      "tool_diameter_in": 0.25,
+      "feed_ipm": 50,
+      "plunge_ipm": 15,
+      "rpm": 18000,
+      "pass_depth_in": 0.0125,
+      "paths": 11791,
+      "cutting_segments": 127249,
+      "guarded_finish_approaches": 11339,
+      "cutting_length_in": 2417.570118500743,
+      "feed_motion_minutes": 59.54358139873458,
+      "bytes": 5575273
+    },
+    {
+      "filename": "Walnut_01_quarter.tap",
+      "maximum_cut_depth_in": 0.16999999999999998,
+      "tool_diameter_in": 0.25,
+      "feed_ipm": 80,
+      "plunge_ipm": 15,
+      "rpm": 18000,
+      "pass_depth_in": 0.04,
+      "paths": 108,
+      "cutting_segments": 3438,
+      "guarded_finish_approaches": 0,
+      "cutting_length_in": 306.4633179628067,
+      "feed_motion_minutes": 8.500828177250636,
+      "bytes": 152421
+    },
+    {
+      "filename": "Walnut_02_eighth.tap",
+      "maximum_cut_depth_in": 0.16999999999999998,
+      "tool_diameter_in": 0.125,
+      "feed_ipm": 50,
+      "plunge_ipm": 10,
+      "rpm": 18000,
+      "pass_depth_in": 0.02,
+      "paths": 475,
+      "cutting_segments": 31212,
+      "guarded_finish_approaches": 0,
+      "cutting_length_in": 604.2500946910451,
+      "feed_motion_minutes": 23.82143233229051,
+      "bytes": 1359454
+    },
+    {
+      "filename": "Walnut_03_V60.tap",
+      "maximum_cut_depth_in": 0.16999999999999998,
+      "tool_diameter_in": 0.25,
+      "feed_ipm": 50,
+      "plunge_ipm": 15,
+      "rpm": 18000,
+      "pass_depth_in": 0.0125,
+      "paths": 10750,
+      "cutting_segments": 141060,
+      "guarded_finish_approaches": 10563,
+      "cutting_length_in": 2245.917735161469,
+      "feed_motion_minutes": 53.28593868321727,
+      "bytes": 5901436
+    }
+  ],
+  "parameters": {
+    "maple_stock_in": [
+      4,
+      4,
+      0.5
+    ],
+    "walnut_stock_in": [
+      4,
+      4,
+      0.5
+    ],
+    "pocket_depth_in": 0.125,
+    "glue_gap_in": 0.005,
+    "surface_gap_in": 0.05,
+    "male_background_depth_in": 0.16999999999999998,
+    "xy_zero": "lower_left",
+    "z_zero": "original_stock_top",
+    "safe_z_in": 1.0,
+    "short_feed_link_air_height_in": 0.025,
+    "vbit_rough_contour_increment_in": 0.005,
+    "vbit_finish_cone_increment_limit_in": 0.0125,
+    "vbit_angle_deg": 60,
+    "vbit_flutes": 3,
+    "vbit_brand": "unidentified",
+    "vbit_label_code": "CXZ20260121",
+    "tip_model": "pointed",
+    "vbit_minimum_usable_cutting_height_in": 0.16999999999999998,
+    "manufacturer_feeds_verified": false,
+    "controller": "PlanetCNC standard G-code",
+    "uses_vcarve_postprocessor": false
+  },
+  "validation_limits": [
+    "No machine execution or physical test fit performed.",
+    "Geometry simulation does not model bit stress, runout, grain, or workholding.",
+    "Pointed 60 degree tip and sufficient usable cutting height must be checked physically."
+  ],
+  "elapsed_seconds": 166.43700000000536
+}

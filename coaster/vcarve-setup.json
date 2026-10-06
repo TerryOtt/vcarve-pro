@@ -1,0 +1,42 @@
+{
+  "status": "design_vectors_and_preview_recipe_only",
+  "native_crv_created": false,
+  "planetcnc_gcode_created": false,
+  "logo": {
+    "width_in": 3.0,
+    "center_in": [2.0, 2.0],
+    "registered_mark": false,
+    "pre_mirrored": false,
+    "dark_regions_material": "walnut",
+    "light_regions_material": "maple"
+  },
+  "maple_sheet": {
+    "width_in": 4.0,
+    "height_in": 4.0,
+    "thickness_in": 0.5,
+    "z_zero": "original_material_top",
+    "xy_datum": "lower_left"
+  },
+  "walnut_sheet": {
+    "width_in": null,
+    "height_in": null,
+    "thickness_in": 1.0,
+    "z_zero": "original_material_top"
+  },
+  "proposed_scrap_test_inlay": {
+    "toolpath_type": "automatic_vcarve_inlay",
+    "pocket_maximum_depth_in": 0.125,
+    "glue_gap_in": 0.005,
+    "surface_gap_in": 0.05,
+    "plug_outer_boundary": "vector_offset",
+    "boundary_offset_in": 0.25,
+    "main_tool_included_angle_deg": 60,
+    "main_tool_tip_geometry_confirmed": false,
+    "clearance_tool_diameters_in_in_order": [0.25, 0.125],
+    "feeds_rpm_and_pass_depths": null,
+    "machine_profile_label": "Imported",
+    "postprocessor": "Digital Wood Carver (inch) (*.tap)",
+    "postprocessor_identified_from_user_export_window": true,
+    "postprocessor_contents_reviewed": false
+  }
+}

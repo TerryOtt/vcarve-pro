@@ -1,0 +1,36 @@
+{
+  "rows": 638,
+  "columns": 12,
+  "check": {
+    "recordCount": 1,
+    "truncated": false,
+    "metadata": {
+      "revision": "p1i931",
+      "target": {
+        "id": "wb/cwyq7h",
+        "beforeLines": 0,
+        "afterLines": 0
+      },
+      "kind": {
+        "requested": "table",
+        "tokens": [
+          "table"
+        ]
+      },
+      "include": {
+        "requested": "values,formulas",
+        "tokens": [
+          "values",
+          "formulas"
+        ]
+      },
+      "exclude": {
+        "tokens": []
+      },
+      "notices": []
+    }
+  },
+  "missingShanks": [
+    "RCK-420"
+  ]
+}

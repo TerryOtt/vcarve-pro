@@ -1,0 +1,66 @@
+import fs from 'node:fs/promises';
+import path from 'node:path';
+import {fileURLToPath} from 'node:url';
+import {Workbook,SpreadsheetFile} from '@oai/artifact-tool';
+
+const root=path.dirname(fileURLToPath(import.meta.url));
+const outputDir=path.resolve(root,'../artifacts');
+await fs.mkdir(outputDir,{recursive:true});
+const source=JSON.parse(await fs.readFile(path.join(root,'database.json'),'utf8'));
+{
+ const book=Workbook.create(), sheet=book.worksheets.add('Tools');
+ const cuts=new Map(source.presets.filter(p=>p[1]==='Hardwood').map(p=>[p[20],p]));
+ const unit=(v,metric)=>v==null?null:v/(metric?25.4:1);
+ const eligible=source.tools.filter(t=>t[0] && cuts.has(t[21]) && t[2]!=='Drill' && t[1]!=='In-Sand CNC Sanders' && !/\bBORING\b/i.test(t[17]));
+ const rows=eligible.map(t=>{const p=cuts.get(t[21]);return [t[0],unit(p[12],p[11]==='mm'),unit(p[14],p[11]==='mm'),unit(p[16],p[11]==='mm'),p[8],unit(p[4],p[3]==='mm/min'),unit(p[6],p[3]==='mm/min'),t[12],t[17]];});
+ const last=rows.length+7;
+ sheet.showGridLines=false;
+ sheet.getRange(`A1:L${last}`).format.font={name:'Arial',size:10,color:'#252525'};
+ sheet.getRange('A2').values=[['Amana router bits — Hardwood settings']];
+ sheet.getRange('A2').format.font={name:'Arial',size:14,bold:true};
+ sheet.getRange('A3').values=[[`${rows.length} router-bit definitions with catalog IDs and Hardwood presets. Boring/drill bits and sanders excluded.`]];
+ sheet.getRange('A4').values=[['Source: '+source.metadata.source_url]];
+ sheet.getRange('A5').values=[['Blanks mean unavailable or not applicable. Spindle Speed and RPM are combined.']];
+ const typeNames={'V-Bit':'v-bit','Endmill':'endmill','Bowl Bits':'bowl','Roundover Bits':'roundover','Plunge Bits':'plunge','Architectural Bits':'architectural','T-Slot Bits':'t-slot','Mortising Bits':'mortising','Keyhole Bit':'keyhole','Countersink Bits':'roundover','Chamfer/Rabbet':'chamfer/rabbet'};
+ const titleCase=value=>value.replace(/\b[a-z]/g,letter=>letter.toUpperCase());
+ function shank(t){
+  const text=t[15]??t[17];
+  const m=t[15]?text.match(/(\d+(?:\.\d+)?(?:\/\d+)?)\s*(mm|\"|Inch)?/i):text.match(/(\d+(?:\.\d+)?(?:\/\d+)?)\s*(mm|\"|Inch)?\s*(?:Shank|SHK)/i);
+  if(!m)return null;
+  const parts=m[1].split('/').map(Number),value=parts.length===2?parts[0]/parts[1]:parts[0];
+  return m[2]?.toLowerCase()==='mm'?value/25.4:value;
+ }
+ const displayRows=rows.map((r,i)=>[titleCase(typeNames[eligible[i][1]]??eligible[i][1].toLowerCase()),r[0],shank(eligible[i]),unit(eligible[i][4],eligible[i][3]==='mm'),r[4],r[5],r[6],r[7],r[1],r[2],r[3],r[8]]);
+ const collator=new Intl.Collator('en',{numeric:true,sensitivity:'base'});
+ const typeOrder=['Endmill','V-Bit','Flattening','Engraving','Bowl','Roundover'];
+ const rank=type=>{const i=typeOrder.indexOf(type);return i<0?typeOrder.length:i;};
+ displayRows.sort((a,b)=>rank(a[0])-rank(b[0])||collator.compare(a[0],b[0])||(a[2]??Infinity)-(b[2]??Infinity)||(a[3]??Infinity)-(b[3]??Infinity));
+ await fs.writeFile(root+'/sorted-types.json',JSON.stringify([...new Set(displayRows.map(r=>r[0]))]));
+ sheet.getRange('A7:L7').values=[['Cutting Type','Shank Diameter (in)','Tool ID','Cutting Diameter (D) (in)','Spindle Speed (RPM)','Feed Rate (inches/min)','Plunge Rate (inches/min)','Number of Flutes','Pass Depth (in)','Stepover (in)','Clearance Pass (in)','Original Definition Name']];
+ sheet.getRange(`A8:L${last}`).values=displayRows.map(r=>[r[0],r[2],r[1],...r.slice(3)]);
+ sheet.getRange(`A8:L${last}`).format.rowHeight=22;
+ sheet.getRange(`A8:L${last}`).format.horizontalAlignment='center';
+ sheet.getRange(`A8:L${last}`).format.verticalAlignment='center';
+ sheet.getRange(`L8:L${last}`).format.horizontalAlignment='left';
+ sheet.getRange(`C8:C${last}`).setNumberFormat('@');
+ sheet.getRange(`B8:B${last}`).setNumberFormat('0.0000');
+ sheet.getRange(`D8:D${last}`).setNumberFormat('0.0000');
+ sheet.getRange(`E8:E${last}`).setNumberFormat('#,##0');
+ sheet.getRange(`F8:G${last}`).setNumberFormat('0.00');
+ sheet.getRange(`H8:H${last}`).setNumberFormat('0');
+ sheet.getRange(`I8:K${last}`).setNumberFormat('0.0000');
+ const table=sheet.tables.add(`A7:L${last}`,true,'AmanaTools');table.style='TableStyleLight1';table.showFilterButton=true;
+ sheet.getRange('A7:L7').format={fill:'#892B3A',font:{name:'Arial',size:10,color:'#FFFFFF',bold:true},wrapText:true,rowHeight:42};
+ sheet.getRange(`A7:L${last}`).format.autofitColumns();
+ sheet.freezePanes.freezeRows(7);sheet.freezePanes.freezeColumns(4);
+ book.recalculate();
+ const check=await book.inspect({kind:'table',range:'Tools!A7:L12',include:'values,formulas',tableMaxRows:6,tableMaxCols:12,maxChars:6000});
+ await fs.writeFile(root+'/workbook-check.json',JSON.stringify({rows:rows.length,columns:12,check,missingShanks:displayRows.filter(r=>r[2]==null).map(r=>r[1])},null,2));
+ await fs.writeFile(root+'/sorted-rows.json',JSON.stringify(displayRows));
+ const preview=await book.render({sheetName:'Tools',range:'A1:L12',scale:1,format:'png'});
+ await fs.writeFile(root+'/settings-preview.png',new Uint8Array(await preview.arrayBuffer()));
+ if(rows.some(r=>!r[0]))throw new Error('Missing Tool ID Code');
+ await (await SpreadsheetFile.exportXlsx(book)).save(outputDir+'/Amana-Hardwood-Router-Bits.xlsx');
+ console.log(`Saved workbook: ${rows.length} rows, 12 columns.`);
+ process.exit(0);
+}

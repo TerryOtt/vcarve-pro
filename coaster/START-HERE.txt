@@ -1,0 +1,144 @@
+PURDUE COASTER - VCARVE PRO 12.5 INPUT FILES
+
+Design
+  Finished maple coaster: 4 x 4 inches, 0.5 inch thick.
+  Walnut plug stock: 1 inch thick; enter its actual width and height in VCarve.
+  Logo: 3 inches wide x approximately 1.60565 inches high.
+  Position: centered at X=2, Y=2 in a 4 x 4 inch job.
+  Margins: 0.5 inch left/right; approximately 1.197 inch top/bottom.
+  Registered mark removed as requested.
+  Walnut fills the dark regions; the outside and narrow light channels stay maple.
+
+Files
+  purdue-coaster-logo-3in.dxf - R12 compatibility export, inch coordinates, five closed contours.
+  purdue-coaster-logo-3in.svg - alternative import of the same five closed contours.
+  vector-layout-preview.png - flat color preview of the actual supplied vectors.
+  geometry-check.json - dimensions and geometric verification results.
+
+Import EITHER the DXF OR the SVG, once. Do not import both into the same job.
+The logo contains no stock rectangle, no mirrored plug, and no cutting instructions.
+Use these original vectors rather than tracing the photorealistic rendering.
+This package does not contain a native .crv project or PlanetCNC G-code.
+
+1. CREATE THE MAPLE JOB
+  VCarve: File > New.
+  Job Type: Single Sided.
+  Units: inches.
+  Width (X): 4.0; Height (Y): 4.0; Thickness (Z): 0.5.
+  Z-Zero Position: Material Surface / top of material.
+  XY Datum Position: lower-left; Use Offset unchecked.
+  Click OK.
+  This assumes the blank or the defined coaster machining area is exactly 4 x 4.
+  For a larger blank, enter its actual dimensions and locate the coaster accordingly.
+
+2. IMPORT THE LOGO
+  File > Import > Import Vectors / Bitmaps... (some builds say Import Vectors...).
+  Choose purdue-coaster-logo-3in.dxf, then Open.
+  If asked about DXF units, use inches. R12 stores coordinates without a unit declaration.
+  Alternatively choose the SVG instead.
+  Select all the imported logo vectors.
+  Open Set Size and check width = 3.0 inches, height approximately 1.60565 inches.
+  If an importer changed the scale, lock the aspect ratio and set width to 3.0.
+  Center all five contours together in the 4 x 4 material using the alignment tools.
+  Verify the logo center is X=2, Y=2; do not center each contour separately.
+  The five contours include both the walnut outlines and the maple holes/channels.
+  Keep all five selected when calculating the female inlay.
+
+3. ADD THE WALNUT SHEET
+  Use the Sheets tab / Sheet Management to add a separate sheet.
+  Name: Walnut Plug.
+  Thickness: 1.0 inch; width/height: the measured walnut blank dimensions.
+  Use top Z-zero and the intended XY datum for that blank.
+  Return to the Maple sheet and select the complete, unmirrored logo.
+
+4. CONFIRM THE THREE REAL TOOLS
+  Toolpaths > Tool Database.
+  Main tool must represent the actual 60 degree V-bit:
+    Tool Type: V-Bit; Angle: 60 degrees INCLUDED angle.
+    Diameter and all cutting settings must match the actual bit.
+    This assumes a pointed V-bit. A measurable flat or rounded tip needs the
+    appropriate geometry and a matching inlay workflow; do not silently ignore it.
+  Clearance tools: 0.25 inch end mill, then 0.125 inch end mill.
+  Confirm shank, flute count, cutting length, pass depth, feeds and RPM for your
+  actual cutters. The geometry files do not specify or certify these parameters.
+  Assign each different cutter its own tool number.
+
+5. GENERATE THE MATCHED INLAY
+  Toolpaths > VCarve Inlay Toolpath.
+  Use the automatic VCarve Inlay toolpath, rather than the straight-sided Inlay
+  Toolpath or the older manual V-Carve/Engraving plug process.
+  Proposed dimensions to preview and test on scrap before the actual coaster:
+    Pocket Depth: 0.125 inch maximum.
+    Glue Gap: 0.005 inch.
+    Surface Gap / Surface Clearance: 0.050 inch.
+  Main tool: the verified 60 degree V-bit.
+  Use Clearance Tools: checked.
+  Add the 0.25 inch end mill first, then the 0.125 inch end mill second.
+  Plug Destination Sheet: Walnut Plug.
+  Plug Outer Boundary: Vector Offset.
+  Boundary Offset: 0.25 inch as a preview starting point; confirm the generated
+  boundary and every toolpath fit the walnut stock and its workholding area.
+  Calculate, then preview both sheets and all their generated toolpaths.
+  The automatic toolpath generates the mirrored plug; do not mirror beforehand.
+  Narrow features can be shallower than 0.125 inch because their width and the
+  60 degree cutter limit the V-cut depth. The stated depth is a maximum.
+  With a 0.125 inch maximum pocket, the 0.5 inch maple retains at least 0.375 inch
+  beneath the inlay, before any later surfacing operations.
+  If the preview shows the maple channels cut away instead of the dark regions,
+  stop and check selection/nesting rather than proceeding to the machine.
+
+6. PREVIEW, SAVE THE PROJECT, AND EXPORT CUTTING FILES
+  This package has been checked geometrically, but has not been calculated or
+  simulated inside your VCarve installation.
+  Set safe clearance/home moves above the actual clamps for each stock setup.
+  Check pocket/plug preview, total cut depths, bounds, and bit engagement.
+  File > Save As... to create your native .crv project.
+  Toolpaths > Save Toolpaths.
+  Your export window shows Machine: Imported and Postprocessor:
+    Digital Wood Carver (inch) (*.tap)
+  Use this existing DWC inch routing postprocessor and save .tap cutting files.
+  Imported is the VCarve machine profile label; the selected postprocessor
+  controls the output format. The actual postprocessor file has not been inspected.
+  Save separate files for each physical cutter because changes are manual.
+  Keep maple and walnut operations in separate files even when using the same bit.
+  Suggested sequence, omitting any clearance operation VCarve does not generate:
+    Maple_01_quarter.tap - quarter-inch clearance
+    Maple_02_eighth.tap - eighth-inch clearance
+    Maple_03_V60.tap - 60 degree V-bit
+    Walnut_01_quarter.tap - quarter-inch clearance
+    Walnut_02_eighth.tap - eighth-inch clearance
+    Walnut_03_V60.tap - 60 degree V-bit
+  A project folder for these exports is available at:
+    D:\Projects\VcarvePro\PlanetCNC
+  Do not combine different cutters using an automatic-tool-change post unless
+  your specific machine setup supports it.
+
+7. PLANETCNC
+  Open the cutting files exported by VCarve in PlanetCNC, one at a time.
+  PlanetCNC's ability to import artwork is not a replacement for calculating the
+  paired, tapered inlay toolpaths in VCarve.
+  Match the physical XY origin and top Z reference to the VCarve sheet setup.
+  For bit changes on the same unmoved stock, retain XY and establish the new bit's
+  Z reference from the original top plane / your correct tool-measuring routine.
+  A cleared pocket floor is not the original top Z reference.
+  A fresh walnut mounting is a new setup with its own XY and Z references.
+
+8. ASSEMBLY AND REMOVING THE WALNUT BACKING
+  Confirm fit on a test pair, then glue and clamp the walnut plug into the maple.
+  The 1 inch walnut stock leaves substantial backing to remove after glue cures.
+  Backing removal and any coaster perimeter cut are separate operations, not
+  included here. Their setup and depth depend on the assembled workpiece and the
+  actual VCarve-generated plug values. Do not treat 1 inch as a pocket cut depth.
+
+Official references
+  Import and file menu:
+  https://docs.vectric.com/docs/V12.5/VCarvePro/ENU/Help/form/file-menu/index.html
+  Automatic matched inlay:
+  https://docs.vectric.com/docs/V12.5/VCarvePro/ENU/Help/form/VCarve%20Inlay%20Toolpath/
+  Exporting separate cutter files:
+  https://docs.vectric.com/docs/V12.5/VCarvePro/ENU/Help/form/Save%20Toolpaths/index.html
+
+Still needed before producing machine-specific cutting files:
+  Exact 60 degree V-bit model/diameter/tip geometry and its cutting settings.
+  Inspect the exported .tap files for units, depths, and cutting settings.
+  Actual walnut blank width/height, workholding, and clearance requirements.

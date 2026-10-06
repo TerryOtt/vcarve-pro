@@ -1,0 +1,6 @@
+numpy
+Pillow
+ezdxf
+shapely>=2
+scipy
+pypdf

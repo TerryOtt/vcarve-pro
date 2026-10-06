@@ -1,0 +1,26 @@
+{
+  "coaster_width_in": 4,
+  "coaster_height_in": 4,
+  "logo_width_in": 3,
+  "logo_height_in": 1.605654239384656,
+  "logo_center_in": [
+    2,
+    2
+  ],
+  "horizontal_margin_in": 0.5,
+  "maple_coaster_thickness_in": 0.5,
+  "walnut_plug_stock_thickness_in": 1,
+  "registered_mark_removed": true,
+  "closed_contours": 5,
+  "vertices_per_contour": [
+    65,
+    61,
+    56,
+    27,
+    21
+  ],
+  "trace_source_pixel_iou": 0.9959549484188747,
+  "maximum_simplification_tolerance_in": 0.0008384385887735916,
+  "svg_and_dxf_have_stock_boundary": false,
+  "gcode_created": false
+}
